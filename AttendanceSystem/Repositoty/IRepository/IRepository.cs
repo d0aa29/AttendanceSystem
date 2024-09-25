@@ -4,12 +4,15 @@ namespace Repository.IRepository
 {
 	public interface IRepository<T> where T : class
 	{
-		// T-Category
-		IEnumerable<T> GetAll(Expression<Func<T, bool>>? Filter = null, string? includeproperties =null);
-		T Get(Expression<Func<T, bool>> Filter, string? includeproperties=null,bool tracked=false);
-		void Add(T entity);
-		void Remove(T entity);
-		void RemoveRange(IEnumerable<T> entity);
-	
-	}
+
+        Task<List<T>> GetAll(Expression<Func<T, bool>>? fillter = null,
+          string? includProperties = null);
+
+        Task<T> Get(Expression<Func<T, bool>> fillter = null, bool tracked = true,
+            string? includProperties = null);
+        Task Create(T entity);
+
+        Task Remove(T entity);
+        Task Save();
+    }
 }
