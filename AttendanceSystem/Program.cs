@@ -3,6 +3,8 @@ using AttendanceSystem.Data;
 using AttendanceSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Repository.IRepository;
+using Repository;
 
 
 
@@ -30,6 +32,8 @@ namespace AttendanceSystem
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // Register application services
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 
