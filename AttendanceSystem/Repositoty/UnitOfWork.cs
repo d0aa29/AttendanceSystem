@@ -24,13 +24,12 @@ namespace Repository
             Shift = new ShiftRepository(db);
         }
 
-    
-        public void Save()
-        {
-            _db.SaveChanges();
-        }
-       
+        //public async Task Save()
+        //{
+        //    await _db.SaveChangesAsync();
+        //}
 
-   
+
+
     }
 }
