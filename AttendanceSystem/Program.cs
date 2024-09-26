@@ -5,8 +5,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository.IRepository;
 using Repository;
+using AutoMapper;
+using AttendanceSystem;
+using Microsoft.EntityFrameworkCore;
+using AttendanceSystem.Data;
 
+using Microsoft.AspNetCore.Identity;
+using AttendanceSystem.Models;
 
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AttendanceSystem
 {
@@ -34,6 +45,8 @@ namespace AttendanceSystem
 
             // Register application services
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddAutoMapper(typeof(MappingConfig));
 
             var app = builder.Build();
 
