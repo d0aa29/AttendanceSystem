@@ -9,8 +9,8 @@ namespace AttendanceSystem.Models
         [Required]
         public int Id { get; set; }
         public DateTime? Date { get; set; }
-        public DateTime CheckIn { get; set; }
-        public DateTime CheckOut { get; set; }
+        public TimeSpan CheckIn { get; set; }
+        public TimeSpan CheckOut { get; set; }
         public string OutStatus { get; set; }
         public string InStatus { get; set; }
         public string? Note { get; set; }
