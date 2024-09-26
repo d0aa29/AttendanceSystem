@@ -9,8 +9,11 @@ namespace AttendanceSystem.Models
         [Key]
         [Required]
         public int Id { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime RequestDate { get; set; }
+        public TimeSpan? StartDate { get; set; }
+        public TimeSpan? EndDate { get; set; }
         public string Reason { get; set; }
         public string ApprovalStatus { get; set; } = "pending...";
 
