@@ -17,7 +17,10 @@ namespace AttendanceSystem
             // Map between shift and shiftDTO
             CreateMap<Shift, ShiftDTO>().ReverseMap();
 
+            // Map between shift and ShiftUpdateDTO
+            CreateMap<Shift, ShiftUpdateDTO>().ReverseMap();
 
+           
 
         }
     }
