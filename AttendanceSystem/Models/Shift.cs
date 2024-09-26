@@ -8,8 +8,8 @@ namespace AttendanceSystem.Models
         [Required]
         public int Id { get; set; }
         public int Num { get; set; }
-        public  DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public TimeSpan From { get; set; }
+        public TimeSpan To { get; set; }
 
         public ICollection<Employee>? Employees { get; set; } = new List<Employee>();
     }
