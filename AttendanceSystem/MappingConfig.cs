@@ -8,8 +8,13 @@ namespace AttendanceSystem
     {
         public MappingConfig()
         {
-            
+            // Map between Department and DepartmentCreateDTO
+            CreateMap<Department, DepartmentCreateDTO>().ReverseMap();
 
+            // Map between Department and DepartmentUpdateDTO
+            CreateMap<Department, DepartmentUpdateDTO>().ReverseMap();
+
+         
         }
     }
     
