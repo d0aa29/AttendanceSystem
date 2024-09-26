@@ -14,7 +14,11 @@ namespace AttendanceSystem
             // Map between Department and DepartmentUpdateDTO
             CreateMap<Department, DepartmentUpdateDTO>().ReverseMap();
 
-         
+            // Map between shift and shiftDTO
+            CreateMap<Shift, ShiftDTO>().ReverseMap();
+
+
+
         }
     }
     
