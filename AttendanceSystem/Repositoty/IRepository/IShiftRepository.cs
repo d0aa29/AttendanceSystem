@@ -5,7 +5,7 @@ namespace AttendanceSystem.Repositoty.IRepository
 {
     public interface IShiftRepository : IRepository<Shift>
     {
-        void Update(Shift shift);
+        Task Update(Shift shift);
        
 
     }

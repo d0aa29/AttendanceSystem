@@ -13,9 +13,14 @@ namespace AttendanceSystem.Repositoty
             _db = db;
         }
 
-        public void Update(Department department)
+        //public void Update(Department department)
+        //{
+        //    _db.Departments.Update(department);
+        //}
+        public async Task Update(Department department)
         {
             _db.Departments.Update(department);
+            await _db.SaveChangesAsync(); 
         }
     }
 }

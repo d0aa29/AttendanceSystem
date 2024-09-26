@@ -5,9 +5,8 @@ namespace AttendanceSystem.Repositoty.IRepository
 {
     public interface IAttendanceRecordRepository : IRepository<AttendanceRecord>
     {
-        void Update(AttendanceRecord attendance);
-       
-
+       // void Update(AttendanceRecord attendance);
+        Task Update(AttendanceRecord attendance);
     }
     
 }

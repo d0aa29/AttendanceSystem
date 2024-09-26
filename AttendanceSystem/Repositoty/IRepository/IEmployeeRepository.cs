@@ -5,7 +5,7 @@ namespace AttendanceSystem.Repositoty.IRepository
 {
     public interface IEmployeeRepository : IRepository<Employee>
     {
-        void Update(Employee employee);
+        Task Update(Employee employee);
        
 
     }

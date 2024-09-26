@@ -5,7 +5,7 @@ namespace AttendanceSystem.Repositoty.IRepository
 {
     public interface ILeaveRequestRepository : IRepository<LeaveRequest>
     {
-        void Update(LeaveRequest request);
+        Task Update(LeaveRequest request);
        
 
     }

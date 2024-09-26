@@ -1,6 +1,7 @@
 ﻿using AttendanceSystem.Data;
 using AttendanceSystem.Models;
 using AttendanceSystem.Repositoty.IRepository;
+using Azure.Core;
 using Repository;
 
 namespace AttendanceSystem.Repositoty
@@ -13,9 +14,14 @@ namespace AttendanceSystem.Repositoty
             _db = db;
         }
 
-        public void Update(LeaveRequest request)
+        //public void Update(LeaveRequest request)
+        //{
+        //    _db.LeaveRequests.Update(request); 
+        //}
+        public async Task Update(LeaveRequest request)
         {
-            _db.LeaveRequests.Update(request); ;
+            _db.LeaveRequests.Update(request);
+            await _db.SaveChangesAsync();
         }
     }
 }

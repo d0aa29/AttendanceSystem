@@ -13,9 +13,14 @@ namespace AttendanceSystem.Repositoty
             _db = db;
         }
 
-        public void Update(Shift shift)
+        //public void Update(Shift shift)
+        //{
+        //    _db.Shifts.Update(shift);
+        //}
+        public async Task Update(Shift shift)
         {
             _db.Shifts.Update(shift);
+            await _db.SaveChangesAsync();
         }
     }
 }

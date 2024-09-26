@@ -12,10 +12,18 @@ namespace AttendanceSystem.Repositoty
         {
             _db = db;
         }
-
-        public void Update(AttendanceRecord record)
+        public async Task Update(AttendanceRecord attendance)
         {
-            _db.AttendanceRecords.Update(record);
+
+            _db.AttendanceRecords.Update(attendance);
+            await _db.SaveChangesAsync();
         }
+
+        //public void Update(AttendanceRecord record)
+        //{
+        //    _db.AttendanceRecords.Update(record);
+        //}
+
+       
     }
 }

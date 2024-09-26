@@ -5,7 +5,7 @@ namespace AttendanceSystem.Repositoty.IRepository
 {
     public interface IDepartmentRepository : IRepository<Department>
     {
-        void Update(Department department);
+        Task Update(Department department);
 
     }
     
