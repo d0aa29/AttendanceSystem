@@ -49,7 +49,9 @@ namespace AttendanceSystem
 
             // Register application services
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-           
+            // Register the AuthoRepository service with IAthuRepository
+            builder.Services.AddScoped<IAthuRepository, AuthoRepository>();
+
             builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 
