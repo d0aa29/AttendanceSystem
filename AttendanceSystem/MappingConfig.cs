@@ -26,8 +26,15 @@ namespace AttendanceSystem
 
             // Map between ApplicationUser and UserUpdateDTO
             CreateMap<ApplicationUser, UserUpdateDTO>().ReverseMap();
+            // Map between Employee and EmployeeCreateDTO
+            CreateMap<Employee, EmployeeCreateDTO>().ReverseMap();
 
-}
+            // Map between Employee and EmployeeCreateDTO
+            CreateMap<Employee, EmployeeUpdateDTO>().ReverseMap();
+
+           
+
+        }
     }
     
 }
