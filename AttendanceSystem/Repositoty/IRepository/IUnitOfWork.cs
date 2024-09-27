@@ -13,7 +13,8 @@ namespace Repository.IRepository
 
         public ILeaveRequestRepository LeaveRequest { get; }
         public IShiftRepository Shift { get; }
-
-       // Task Save();
+        public IUserRepository User { get; }
     }
+    // Task Save();
 }
+
