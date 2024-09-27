@@ -26,7 +26,7 @@ namespace AttendanceSystem.Models
         public Department Department { get; set; }
 
         // Foreign key to ApplicationUser
-        [Required]
+       // [Required]
         public string? UserId { get; set; }  
         [ForeignKey("UserId")]
         public ApplicationUser? User { get; set; }
