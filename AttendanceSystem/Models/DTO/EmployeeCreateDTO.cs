@@ -4,7 +4,7 @@ namespace AttendanceSystem.Models.DTO
 {
     public class EmployeeCreateDTO
     {
-        public int Id { get; set; }
+       
         public int SSN { get; set; }
         public string Name { get; set; }
         public string? Gender { get; set; }
