@@ -46,12 +46,23 @@ namespace AttendanceSystem
             // Map between Employee and EmployeeCreateDTO
             CreateMap<Employee, EmpShiftsUpdateDTO>().ReverseMap();
 
-
           // Map between LeaveRequest and LeaveRequestDTO
             CreateMap<LeaveRequest, LeaveRequestDTO>().ReverseMap();
 
             // Map between LeaveRequest and RequestCreateDTO
             CreateMap<LeaveRequest, RequestCreateDTO>().ReverseMap();
+
+
+            // Map between AttendanceRecord and AttendanceRecordUpdateDTO
+            CreateMap<AttendanceRecord, AttendanceRecordUpdateDTO>().ReverseMap();
+
+            // Map between AttendanceRecord and AttendanceRecordDTO
+            CreateMap<AttendanceRecord, AttendanceRecordDTO>().ReverseMap();
+
+            // Map between AttendanceRecord and AttendanceRecordCreateDTO
+            CreateMap<AttendanceRecord, AttendanceRecordCreateDTO>().ReverseMap();
+
+
 
         }
     }
