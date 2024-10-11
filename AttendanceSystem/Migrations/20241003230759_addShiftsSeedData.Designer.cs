@@ -4,6 +4,7 @@ using AttendanceSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AttendanceSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241003230759_addShiftsSeedData")]
+    partial class addShiftsSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,15 +94,15 @@ namespace AttendanceSystem.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fee98ec3-6407-482c-b736-18b22bf9694b",
+                            ConcurrencyStamp = "7914f492-16ea-4b27-acce-8541730b523b",
                             Email = "admin@system.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@SYSTEM.COM",
                             NormalizedUserName = "ADMIN@SYSTEM.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMz6LBYgAEtuJ9JxXMvHlwP8Lovn9sMY+++HV4cZSz0p+53iTst/l0dml//K5IWLfQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIm1vChm31pTRCLRxJ56NiK91ZOtmiHx8Ugss2REvVFbKL/sBbhyWfcLCiKwnFfyPw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b40ba27d-97e7-4cf5-aeff-c4291b433d8a",
+                            SecurityStamp = "3eae3924-4d7b-481f-9cfb-4e65890ef51c",
                             TwoFactorEnabled = false,
                             UserName = "admin@system.com"
                         },
@@ -107,15 +110,15 @@ namespace AttendanceSystem.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8ace45fc-3db4-4f19-8df2-9d6e026dde4c",
+                            ConcurrencyStamp = "b42b60f9-7d45-4469-a5f4-79f8d822815d",
                             Email = "jane@system.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "JANE@SYSTEM.COM",
                             NormalizedUserName = "JANE@SYSTEM.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEB4SpkSGuT8f+ZpfDNPb8xfCrZTZnHuqW2QLd1MbfGsAPXz6L7WDeB2NWMEYBPSgGQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEEg2+qCBipSPnnhF2C/Le84xEHDxZE59egzPWrG9Q8mGZXcj800zb41FqOZZG35CQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3f971055-d79a-4717-8329-f5a57aad8f35",
+                            SecurityStamp = "a83aae37-c97d-4659-ae2c-fda77cfc0c38",
                             TwoFactorEnabled = false,
                             UserName = "jane@system.com"
                         });
