@@ -14,7 +14,7 @@ namespace AttendanceSystem.Models
         public DateTime RequestDate { get; set; }
         public TimeSpan? StartDate { get; set; }
         public TimeSpan? EndDate { get; set; }
-        public string Reason { get; set; }
+        public string? Reason { get; set; }
         public string ApprovalStatus { get; set; } = "pending...";
 
         [Required]
