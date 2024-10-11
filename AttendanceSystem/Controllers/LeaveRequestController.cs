@@ -289,6 +289,90 @@ namespace AttendanceSystem.Controllers
 
         }
 
+        [Authorize(Roles = "Admin, Manager")]
+        [HttpPut("approve/{id:int}", Name = "ApproveRequest")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<APIResponse>> ApproveRequest(int id, [FromBody] RequestUpdateDTO RequestDTO)
+        {
+            try
+            {
+
+
+                if (id != RequestDTO.Id || RequestDTO == null)
+                    return BadRequest();
+
+                if (User.IsInRole("Manager"))
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var manager = await _unitOfWork.Employee.Get(u => u.UserId == userId);
+                    var emp = await _unitOfWork.Employee.Get(x => x.Id == RequestDTO.EmployeeId);
+                    if (emp == null)
+                    {
+                        return NotFound("Employee not found.");
+                    }
+                    if (manager.DepartmentId != emp.DepartmentId)
+                        return NotFound("You are not authorized to delete this employee.");
+                }
+
+                LeaveRequest model = _mapper.Map<LeaveRequest>(RequestDTO);
+                model.ApprovalStatus = "Aproved";
+                await _unitOfWork.LeaveRequest.Update(model);
+
+                //  _response.Result = _mapper.Map<VillaDTO>(model);
+                _response.StatusCode = HttpStatusCode.NoContent;
+                _response.IsSuccess = true;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
+        [Authorize(Roles = "Admin, Manager")]
+        [HttpPut("deny/{id:int}", Name = "DenyRequest")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<APIResponse>> DenyRequest(int id, [FromBody] RequestUpdateDTO RequestDTO)
+        {
+            try
+            {
+                if (id != RequestDTO.Id || RequestDTO == null)
+                    return BadRequest();
+
+                if (User.IsInRole("Manager"))
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var manager = await _unitOfWork.Employee.Get(u => u.UserId == userId);
+                    var emp = await _unitOfWork.Employee.Get(x => x.Id == RequestDTO.EmployeeId);
+                    if (emp == null)
+                    {
+                        return NotFound("Employee not found.");
+                    }
+                    if (manager.DepartmentId != emp.DepartmentId)
+                        return NotFound("You are not authorized to delete this employee.");
+                }
+
+                LeaveRequest model = _mapper.Map<LeaveRequest>(RequestDTO);
+                model.ApprovalStatus = "Deny";
+                await _unitOfWork.LeaveRequest.Update(model);
+
+                //  _response.Result = _mapper.Map<VillaDTO>(model);
+                _response.StatusCode = HttpStatusCode.NoContent;
+                _response.IsSuccess = true;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
 
 
     }
