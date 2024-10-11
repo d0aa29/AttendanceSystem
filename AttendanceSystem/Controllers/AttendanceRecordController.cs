@@ -74,7 +74,41 @@ namespace AttendanceSystem.Controllers
             }
             return _response;
         }
-     
+
+        [HttpGet("MyAttendanceRecord")]
+        [Authorize(Roles = "Employee, Admin, Manager")]
+        public async Task<ActionResult<APIResponse>> GetEmployeeRecords()
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Get logged-in employee's ID
+                var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId);
+                //  var reqcordList = await _unitOfWork.AttendanceRecord.GetAll(u => u.EmployeeId == employee.Id, false, includProperties: "Employee");
+
+
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+                // IEnumerable<AttendanceRecord>
+                var reqcordList = await _unitOfWork.AttendanceRecord.GetAll(x => x.EmployeeId == employee.Id);
+
+                var ReqcordListDTO = _mapper.Map<IEnumerable<AttendanceRecordDTO>>(reqcordList);
+                _response.Result = ReqcordListDTO;
+
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
+      
 
     }
 }
