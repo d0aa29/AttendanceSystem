@@ -189,6 +189,106 @@ namespace AttendanceSystem.Controllers
             return _response;
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = "Admin, Manager")]
+        public async Task<ActionResult<APIResponse>> GetAllRequest()
+        {
+            try
+            {
+                IEnumerable<LeaveRequest> RequestList;
+                if (User.IsInRole("Admin"))
+                {
+                    // Admin can access all attendance records
+                    RequestList = await _unitOfWork.LeaveRequest.GetAll();
+                }
+                else if (User.IsInRole("Manager"))
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId);
+                    if (employee == null)
+                    {
+                        return NotFound("Employee not found.");
+                    }
+                    RequestList = await _unitOfWork.LeaveRequest.GetAll(x => x.Employee.DepartmentId == employee.DepartmentId);
+                }
+                else
+                {
+                    return Forbid();
+                }
+
+                _response.Result = RequestList;
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
+        [Authorize(Roles = "Admin, Manager")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("{id:int}", Name = "GetRequestById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> GetRequestById(int id)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+                LeaveRequest Request;
+
+                if (User.IsInRole("Admin"))
+                {
+                    // Admin can access all attendance records
+                    Request = await _unitOfWork.LeaveRequest.Get(x => x.Id == id);
+                }
+                else if (User.IsInRole("Manager"))
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var Manager = await _unitOfWork.Employee.Get(u => u.UserId == userId);
+                    if (Manager == null)
+                    {
+                        return NotFound("Employee not found.");
+                    }
+                    Request = await _unitOfWork.LeaveRequest.Get(x => x.Id == id && x.Employee.DepartmentId == Manager.DepartmentId);
+                    if (Request == null)
+                    {
+
+                        _response.StatusCode = HttpStatusCode.NotFound;
+                        return NotFound(_response);
+                    }
+
+                }
+                else
+                {
+                    return Forbid();
+                }
+
+                // _response.Result = _mapper.Map<VillaDTO>(villa);
+                _response.Result = _mapper.Map<LeaveRequestDTO>(Request);
+                // _response.Result = Request;
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+
+        }
+
 
 
     }
