@@ -108,6 +108,96 @@ namespace AttendanceSystem.Controllers
             return _response;
         }
 
+
+        [HttpPost("CheckIn")]
+        [Authorize(Roles = "Employee, Admin, Manager")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponse>> CreateAttendanceRecord([FromBody] AttendanceRecordCreateDTO AttendanceDTO)
+        {
+            try
+            {
+
+                if (AttendanceDTO == null)
+                    return BadRequest();
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Get logged-in employee's ID
+
+                var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId, includProperties: "Department,User,Shifts");
+
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
+                AttendanceRecord attendance = _mapper.Map<AttendanceRecord>(AttendanceDTO);
+
+                attendance.EmployeeId = employee.Id;
+                attendance.Date = DateTime.Now;
+                attendance.CheckIn = DateTime.Now.TimeOfDay;
+
+                Shift shift = await _unitOfWork.Shift.Get(x => x.Id == AttendanceDTO.ShiftId);
+
+
+                var shiftStart = shift.From;
+                var shiftEnd = shift.To;
+                TimeSpan gracePeriod = new TimeSpan(0, 15, 0); // 15-minute grace period
+
+                // Check if the shift spans over midnight
+                bool isShiftOverMidnight = shiftStart > shiftEnd;
+
+                if (isShiftOverMidnight)
+                {
+                    // Shift crosses midnight (e.g., 10 PM to 6 AM)
+                    if (attendance.CheckIn >= shiftStart || attendance.CheckIn <= shiftEnd)
+                    {
+                        // Check if employee is within the grace period after shift start
+                        if (attendance.CheckIn > shiftStart.Add(gracePeriod))
+                        {
+                            attendance.InStatus = "Late";
+                        }
+                        else
+                        {
+                            attendance.InStatus = "On Time"; // Checked in within the grace period
+                        }
+                    }
+                    else
+                    {
+                        attendance.InStatus = "Late"; // Checked in outside the shift window
+                    }
+                }
+                else
+                {
+                    // Regular shift that doesn't cross midnight
+                    if (attendance.CheckIn > shiftStart.Add(gracePeriod))
+                    {
+                        attendance.InStatus = "Late"; // Late beyond grace period
+                    }
+                    else
+                    {
+                        attendance.InStatus = "On Time"; // Checked in within the grace period
+                    }
+                }
+
+
+
+                await _unitOfWork.AttendanceRecord.Create(attendance);
+                // await _dbvilla.Save();
+                _response.Result = _mapper.Map<AttendanceRecordCreateDTO>(attendance);
+                _response.StatusCode = HttpStatusCode.OK;
+                // return Ok(_response);
+
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
       
 
     }
