@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.Models.DTO;
 using AttendanceSystem.Repositoty.IRepository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.IRepository;
@@ -10,6 +11,7 @@ using System.Net;
 
 namespace AttendanceSystem.Controllers
 {
+    [Authorize(Roles = "Admin, Manager")]
     [Route("api/Shift")]
     [ApiController]
     public class ShiftController : ControllerBase
