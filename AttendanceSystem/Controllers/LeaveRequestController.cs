@@ -145,6 +145,51 @@ namespace AttendanceSystem.Controllers
             return _response;
         }
 
+    
+
+        [Authorize(Roles = "Employee, Manager")]
+        [HttpDelete("{id:int}", Name = "DeleteRequest")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponse>> DeleteRequest(int id)
+        {
+            try
+            {
+                if (id == null)
+                    return BadRequest();
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Get logged-in employee's ID
+                var Request = await _unitOfWork.LeaveRequest.Get(u => u.Id == id, false, includProperties: "Employee");
+                var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId, false);
+
+                // Check if the leave request belongs to the logged-in employee
+                if (Request == null || Request.EmployeeId != employee.Id)
+                {
+                    return BadRequest("You can only update your own leave requests.");
+                }
+                // var Request = await _unitOfWork.LeaveRequest.Get(x => x.Id == id);
+
+                if (Request == null)
+                {
+                    return BadRequest();
+                }
+
+                await _unitOfWork.LeaveRequest.Remove(Request);
+                _response.StatusCode = HttpStatusCode.NoContent;
+                _response.IsSuccess = true;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
+
 
     }
 }
