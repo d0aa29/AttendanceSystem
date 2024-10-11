@@ -31,6 +31,22 @@ namespace AttendanceSystem
 
             // Map between Employee and EmployeeCreateDTO
             CreateMap<Employee, EmployeeUpdateDTO>().ReverseMap();
+
+            CreateMap<EmpEditProfileDTO, Employee>()
+          .ForMember(dest => dest.DepartmentId, opt => opt.Condition(src => src.DepartmentId > 0))
+          // .ForMember(dest => dest.DepartmentId, opt => opt.Condition(src => src.DepartmentId.HasValue))
+          .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+
+
+            CreateMap<Employee, EmployeeDTO>()
+            .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department != null ? src.Department.Name : "No Department"))
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : "No User"));
+
+            // Map between Employee and EmployeeCreateDTO
+            CreateMap<Employee, EmpShiftsUpdateDTO>().ReverseMap();
+
+
           // Map between LeaveRequest and LeaveRequestDTO
             CreateMap<LeaveRequest, LeaveRequestDTO>().ReverseMap();
 
