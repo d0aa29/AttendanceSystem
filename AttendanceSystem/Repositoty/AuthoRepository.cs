@@ -111,6 +111,7 @@ namespace AttendanceSystem.Repository
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.UserName.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
                     new Claim(ClaimTypes.Role,roles.FirstOrDefault())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
