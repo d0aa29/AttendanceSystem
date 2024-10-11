@@ -198,7 +198,93 @@ namespace AttendanceSystem.Controllers
             return _response;
         }
 
-      
+        //[HttpPut("update/{id:int}", Name = "CheckOut")]
+        [HttpPut("CheckOut")]
+        [Authorize(Roles = "Employee, Admin, Manager")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponse>> CheckOut(int id, [FromBody] AttendanceRecordUpdateDTO AttendanceDTO)
+        {
+            try
+            {
+
+                if (AttendanceDTO == null)
+                    return BadRequest();
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Get logged-in employee's ID
+
+                //  var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId, includProperties: "Department,User,Shifts");
+                if (id != AttendanceDTO.Id || AttendanceDTO == null)
+                    return BadRequest();
+                var req = await _unitOfWork.AttendanceRecord.Get(u => u.Id == id, false, includProperties: "Employee");
+                var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId, false, includProperties: "Department,User,Shifts");
+
+                if (req == null || req.EmployeeId != employee.Id)
+                {
+                    return BadRequest("You can only update your own leave requests.");
+                }
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
+                AttendanceRecord attendance = _mapper.Map<AttendanceRecord>(AttendanceDTO);
+
+                attendance.CheckOut = DateTime.Now.TimeOfDay;
+                attendance.ShiftId = req.ShiftId;
+                attendance.CheckIn = req.CheckIn;
+                attendance.Date = req.Date;
+                attendance.InStatus = req.InStatus;
+                attendance.EmployeeId = req.EmployeeId;
+                if (AttendanceDTO.Note == null)
+                    attendance.Note = req.Note;
+                Shift shift = await _unitOfWork.Shift.Get(x => x.Id == attendance.ShiftId);
+                var shiftEnd = shift.To;
+                var shiftStart = shift.From;
+
+                // Handle the case where the shift spans midnight
+                bool isShiftOverMidnight = shiftStart > shiftEnd;
+                if (isShiftOverMidnight)
+                {
+                    // Case where the shift ends after midnight
+                    if (attendance.CheckOut > shiftEnd && attendance.CheckOut < shiftStart)
+                    {
+                        attendance.OutStatus = "Early";
+                    }
+                    else
+                    {
+                        attendance.OutStatus = "Overtime";
+                    }
+                }
+                else
+                {
+                    // Regular case where the shift doesn't cross midnight
+                    if (attendance.CheckOut < shiftEnd)
+                    {
+                        attendance.OutStatus = "Early";
+                    }
+                    else
+                    {
+                        attendance.OutStatus = "Overtime";
+                    }
+                }
+                await _unitOfWork.AttendanceRecord.Update(attendance);
+
+                _response.Result = _mapper.Map<AttendanceRecordDTO>(attendance);
+                _response.StatusCode = HttpStatusCode.OK;
+                // return Ok(_response);
+
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
 
     }
 }
