@@ -18,8 +18,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.IRepository;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 namespace AttendanceSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/Users")]
 
     // [Route("api/Users")]
@@ -71,7 +73,6 @@ namespace AttendanceSystem.Controllers
             {
                 if (id == null)
                 {
-
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
