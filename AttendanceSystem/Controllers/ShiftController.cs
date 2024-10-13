@@ -66,7 +66,7 @@ namespace AttendanceSystem.Controllers
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
-                // _response.Result = _mapper.Map<VillaDTO>(villa);
+                
                 _response.Result = shift;
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
@@ -100,10 +100,10 @@ namespace AttendanceSystem.Controllers
                 Shift shift = _mapper.Map<Shift>(shiftDTO);
 
                 await _unitOfWork.Shift.Create(shift);
-                // await _dbvilla.Save();
+            
                 _response.Result = _mapper.Map<ShiftDTO>(shift);
                 _response.StatusCode = HttpStatusCode.OK;
-                // return Ok(_response);
+              
 
                 return CreatedAtRoute("GetShiftById", new {id= shift.Id}, _response);
             }
@@ -163,7 +163,6 @@ namespace AttendanceSystem.Controllers
 
                 await _unitOfWork.Shift.Update(model);
 
-                //  _response.Result = _mapper.Map<VillaDTO>(model);
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 return Ok(_response);

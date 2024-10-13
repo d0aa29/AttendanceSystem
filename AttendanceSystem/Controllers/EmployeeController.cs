@@ -247,7 +247,7 @@ namespace AttendanceSystem.Controllers
                     return Forbid();
                 }
 
-             //   emp = await _unitOfWork.Employee.Get(x => x.Id == id, includProperties: "Department,User");
+             
                 if (emp == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
@@ -266,8 +266,6 @@ namespace AttendanceSystem.Controllers
                 };
 
                 _response.Result = employeeDTO;
-                // var empDTO = _mapper.Map<EmployeeDTO>(emp);
-                //  _response.Result = emp;
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }

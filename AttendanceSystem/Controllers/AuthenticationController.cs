@@ -27,7 +27,6 @@ namespace AttendanceSystem.Controllers
             _userManager = userManager;
             _mapper = mapper;
             _roleManager = roleManager;
-            //  _userRepository = userRepository;
             _auth = auth;
             this._response = new();
         }

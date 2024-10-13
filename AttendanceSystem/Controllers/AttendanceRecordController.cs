@@ -33,15 +33,13 @@ namespace AttendanceSystem.Controllers
 
 
                 var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId);
-                //  var reqcordList = await _unitOfWork.AttendanceRecord.GetAll(u => u.EmployeeId == employee.Id, false, includProperties: "Employee");
-
+               
 
                 if (employee == null)
                 {
                     return NotFound();
                 }
-                // IEnumerable<AttendanceRecord>
-                // var reqcordList = await _unitOfWork.AttendanceRecord.GetAll(x => x.EmployeeId == employee.Id);
+               
                 IEnumerable<AttendanceRecord> reqcordList;
 
                 // Check if the user is an admin or a manager
@@ -83,14 +81,12 @@ namespace AttendanceSystem.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Get logged-in employee's ID
                 var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId);
-                //  var reqcordList = await _unitOfWork.AttendanceRecord.GetAll(u => u.EmployeeId == employee.Id, false, includProperties: "Employee");
-
-
+               
                 if (employee == null)
                 {
                     return NotFound();
                 }
-                // IEnumerable<AttendanceRecord>
+                
                 var reqcordList = await _unitOfWork.AttendanceRecord.GetAll(x => x.EmployeeId == employee.Id);
 
                 var ReqcordListDTO = _mapper.Map<IEnumerable<AttendanceRecordDTO>>(reqcordList);
@@ -214,7 +210,7 @@ namespace AttendanceSystem.Controllers
 
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Get logged-in employee's ID
 
-                //  var employee = await _unitOfWork.Employee.Get(u => u.UserId == userId, includProperties: "Department,User,Shifts");
+               
                 if (id != AttendanceDTO.Id || AttendanceDTO == null)
                     return BadRequest();
                 var req = await _unitOfWork.AttendanceRecord.Get(u => u.Id == id, false, includProperties: "Employee");
@@ -273,7 +269,7 @@ namespace AttendanceSystem.Controllers
 
                 _response.Result = _mapper.Map<AttendanceRecordDTO>(attendance);
                 _response.StatusCode = HttpStatusCode.OK;
-                // return Ok(_response);
+             
 
                 return Ok(_response);
             }

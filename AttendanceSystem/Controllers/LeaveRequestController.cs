@@ -38,7 +38,7 @@ namespace AttendanceSystem.Controllers
                 {
                     return NotFound();
                 }
-                // IEnumerable<LeaveRequest> 
+                
                 var RequestList = await _unitOfWork.LeaveRequest.GetAll(x => x.EmployeeId == employee.Id);
                 var RequestListDTO = _mapper.Map<IEnumerable<LeaveRequestDTO>>(RequestList);
                 _response.Result = RequestListDTO;
@@ -76,21 +76,15 @@ namespace AttendanceSystem.Controllers
                 {
                     return NotFound();
                 }
-                // RequestDTO.EmployeeId = employee.Id;
-
-                //if (await  _unitOfWork.LeaveRequest.Get(x => x.Num == RequestDTO.Num) != null)
-                //{
-                //    ModelState.AddModelError("", "Request alredy exist");
-                //    return BadRequest(ModelState);
-                //}
+              
 
                 LeaveRequest Request = _mapper.Map<LeaveRequest>(RequestDTO);
                 Request.EmployeeId = employee.Id;
                 await _unitOfWork.LeaveRequest.Create(Request);
-                // await _dbvilla.Save();
+               
                 _response.Result = _mapper.Map<LeaveRequestDTO>(Request);
                 _response.StatusCode = HttpStatusCode.OK;
-                // return Ok(_response);
+              
 
                 return CreatedAtRoute("GetRequestById", new { id = Request.Id }, _response);
             }
@@ -169,7 +163,7 @@ namespace AttendanceSystem.Controllers
                 {
                     return BadRequest("You can only update your own leave requests.");
                 }
-                // var Request = await _unitOfWork.LeaveRequest.Get(x => x.Id == id);
+             
 
                 if (Request == null)
                 {
@@ -274,9 +268,9 @@ namespace AttendanceSystem.Controllers
                     return Forbid();
                 }
 
-                // _response.Result = _mapper.Map<VillaDTO>(villa);
+                
                 _response.Result = _mapper.Map<LeaveRequestDTO>(Request);
-                // _response.Result = Request;
+            
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
@@ -319,7 +313,7 @@ namespace AttendanceSystem.Controllers
                 model.ApprovalStatus = "Aproved";
                 await _unitOfWork.LeaveRequest.Update(model);
 
-                //  _response.Result = _mapper.Map<VillaDTO>(model);
+             
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 return Ok(_response);
@@ -360,7 +354,7 @@ namespace AttendanceSystem.Controllers
                 model.ApprovalStatus = "Deny";
                 await _unitOfWork.LeaveRequest.Update(model);
 
-                //  _response.Result = _mapper.Map<VillaDTO>(model);
+               
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 return Ok(_response);

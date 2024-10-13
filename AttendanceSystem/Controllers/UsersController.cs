@@ -82,7 +82,7 @@ namespace AttendanceSystem.Controllers
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
-                // _response.Result = _mapper.Map<VillaDTO>(villa);
+               
                 _response.Result = user;
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
@@ -96,40 +96,7 @@ namespace AttendanceSystem.Controllers
 
         }
 
-        //[HttpPost]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //public async Task<ActionResult<APIResponse>> CreateApplicationUser([FromBody] ApplicationUser DeptDTO)
-        //{
-        //    try
-        //    {
-        //        if (DeptDTO == null)
-        //            return BadRequest();
-
-        //        if (await _unitOfWork.User.Get(x => x.UserName.ToLower() == DeptDTO.UserName.ToLower()) != null)
-        //        {
-        //            ModelState.AddModelError("", "ApplicationUser alredy exist");
-        //            return BadRequest(ModelState);
-        //        }
-
-        //        ApplicationUser Dept = _mapper.Map<ApplicationUser>(DeptDTO);
-
-        //        await _unitOfWork.User.Create(Dept);
-        //        // await _dbvilla.Save();
-        //        _response.Result = _mapper.Map<ApplicationUser>(Dept);
-        //        _response.StatusCode = HttpStatusCode.OK;
-        //        // return Ok(_response);
-
-        //        return CreatedAtRoute("GetApplicationUserById", new { id = Dept.Id }, _response);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _response.IsSuccess = false;
-        //        _response.ErrorMessages = new List<string>() { ex.ToString() };
-        //    }
-        //    return _response;
-        //}
+   
 
         [HttpDelete("{id}", Name = "DeleteApplicationUser")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -183,10 +150,6 @@ namespace AttendanceSystem.Controllers
                 _mapper.Map(userDTO, existingUser);
                 await _unitOfWork.User.Update(existingUser);
                 _response.Result = _mapper.Map<UserUpdateDTO>(existingUser);
-
-                //ApplicationUser model = _mapper.Map<ApplicationUser>(userDTO);
-                //await _unitOfWork.User.Update(model);
-                //_response.Result = _mapper.Map<UserUpdateDTO>(model);
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 return Ok(_response);
