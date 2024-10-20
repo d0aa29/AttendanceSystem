@@ -78,4 +78,4 @@ Refer to the `Database.md` for an overview of the database schema.
 - `README.md`: Project overview and setup instructions.
 - `SystemArchitecture.md`: Overview of system architecture, components, and design patterns.
 - `API.md`: List of API endpoints and descriptions.
-- `Database.md`: Database schema and relationships.
+- `Database.md`: Database Tables and relationships.
